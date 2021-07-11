@@ -1,0 +1,36 @@
+name: Test and deploy
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: nvmrc
+        uses: browniebroke/read-nvmrc-action@v1
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: '${{ steps.nvmrc.outputs.node_version }}'
+      - run: npm ci
+      - run: npm run db:init
+      - run: npm run lint
+      - run: npm test
+  deploy-pruebas:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: aeed4d6a-5790-4ac6-bf05-c78a56d56278
+          heroku_app_name: pablot-test
+          heroku_email: pablogerez2000@gmail.com
