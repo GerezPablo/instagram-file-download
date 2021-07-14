@@ -50,7 +50,8 @@
     "helmet": "^4.6.0",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.11"
+    "nodemon": "^2.0.11",
+    "scraper-instagram": "^1.0.17"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
